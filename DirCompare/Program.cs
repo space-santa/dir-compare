@@ -40,7 +40,9 @@ namespace DirCompare
             // It will be different which makes the diff useless.
             // We also need to have consistent path-separators for the same reason.
             var pathWithoutBase = fullPath.Replace(basePath, "");
-            return EnsureNoLeadingSeparator(EnforceWindowsPathSeparator(pathWithoutBase));
+            pathWithoutBase = EnforceWindowsPathSeparator(pathWithoutBase);
+            pathWithoutBase = EnsureNoLeadingSeparator(pathWithoutBase);
+            return pathWithoutBase;
         }
 
         private static string EnforceWindowsPathSeparator(string path)
