@@ -16,9 +16,15 @@ namespace DirCompare
 
         public static void ProcessDirectory(string path)
         {
+            List<string> sums = new List<string>();
             foreach (string file in DirSearch(path))
             {
-                Console.WriteLine($"{file.Replace(path, "")} {CalculateMD5(file)}");
+                sums.Add($"{GetConsistentPathWithoutBase(file, path)} {CalculateMD5(file)}");
+            }
+            sums.Sort();
+            foreach (string line in sums)
+            {
+                Console.WriteLine(line);
             }
         }
 
@@ -28,7 +34,30 @@ namespace DirCompare
             return files;
         }
 
-        static string CalculateMD5(string filename)
+        private static string GetConsistentPathWithoutBase(string fullPath, string basePath)
+        {
+            // To compare the content of the directory we must remove the basePath.
+            // It will be different which makes the diff useless.
+            // We also need to have consistent path-separators for the same reason.
+            var pathWithoutBase = fullPath.Replace(basePath, "");
+            return EnsureNoLeadingSeparator(EnforceWindowsPathSeparator(pathWithoutBase));
+        }
+
+        private static string EnforceWindowsPathSeparator(string path)
+        {
+            return path.Replace("/", "\\");
+        }
+
+        private static string EnsureNoLeadingSeparator(string path)
+        {
+            if (path.StartsWith("\\"))
+            {
+                return path.Remove(0, 1);
+            }
+            return path;
+        }
+
+        private static string CalculateMD5(string filename)
         {
             using (var md5 = MD5.Create())
             {
