@@ -10,12 +10,12 @@ namespace DirCompare
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Now processing {args[0]}");
             ProcessDirectory(args[0]);
         }
 
         public static void ProcessDirectory(string path)
         {
+            Console.WriteLine($"Now processing {path}");
             List<string> sums = new List<string>();
             foreach (string file in DirSearch(path))
             {
