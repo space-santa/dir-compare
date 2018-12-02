@@ -19,6 +19,29 @@ namespace DirCompare
             ProcessDirectory();
         }
 
+        public RecursiveMD5ListOfDirectory(List<string> pathsWithMD5Sum, IOutput output)
+        {
+            _pathsWithMD5Sum = pathsWithMD5Sum;
+            _output = output;
+        }
+
+        public List<string> GetPathsWithMD5Sum()
+        {
+            return _pathsWithMD5Sum;
+        }
+
+        public RecursiveMD5ListOfDirectory Diff(RecursiveMD5ListOfDirectory rhs)
+        {
+            var aNotInB = _pathsWithMD5Sum.Except(rhs.GetPathsWithMD5Sum()).ToList();
+            var bNotInA = rhs.GetPathsWithMD5Sum().Except(_pathsWithMD5Sum).ToList();
+            List<string> diffList = new List<string>();
+            diffList.Add("aNotInB");
+            diffList = diffList.Concat(aNotInB).ToList();
+            diffList.Add("bNotInA");
+            diffList = diffList.Concat(bNotInA).ToList();
+            return new RecursiveMD5ListOfDirectory(diffList, _output);
+        }
+
         public void Write()
         {
             _output.Write(_pathsWithMD5Sum);

@@ -7,13 +7,13 @@ namespace DirCompare
     {
         class Options
         {
-            [Option('o', "output", Default="", HelpText = "File to write the result to. If this is not set, the result will be written to stdout.")]
+            [Option('o', "output", Default = "", HelpText = "File to write the result to. If this is not set, the result will be written to stdout.")]
             public string OutputFile { get; set; }
 
             [Value(0, Required = true, MetaName = "basedir", HelpText = "The directory that is scanned recursively.")]
             public string basedir { get; set; }
 
-            [Value(1, MetaName = "basedir 2", HelpText = "The other directory that is scanned. The results will be compared.")]
+            [Value(1, Default = "", MetaName = "basedir 2", HelpText = "The other directory that is scanned. The results will be compared.")]
             public string secondBasedir { get; set; }
         }
 
@@ -32,7 +32,16 @@ namespace DirCompare
                         output = new ConsoleOutput();
                     }
                     var md5sums = new RecursiveMD5ListOfDirectory(o.basedir, output);
-                    md5sums.Write();
+                    if (o.secondBasedir.Length > 0)
+                    {
+                        var secondSums = new RecursiveMD5ListOfDirectory(o.secondBasedir, output);
+                        var diffSums = md5sums.Diff(secondSums);
+                        diffSums.Write();
+                    }
+                    else
+                    {
+                        md5sums.Write();
+                    }
                 });
         }
     }
