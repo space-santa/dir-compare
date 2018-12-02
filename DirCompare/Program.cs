@@ -1,49 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-
-namespace DirCompare
+﻿namespace DirCompare
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ProcessDirectory(args[0]);
-        }
-
-        public static void ProcessDirectory(string path)
-        {
-            Console.WriteLine($"Now processing {path}");
-            List<string> sums = new List<string>();
-            foreach (string file in DirSearch(path))
-            {
-                sums.Add($"{PathProcessor.GetConsistentPathWithoutBase(file, path)} {CalculateMD5(file)}");
-            }
-            sums.Sort();
-            foreach (string line in sums)
-            {
-                Console.WriteLine(line);
-            }
-        }
-
-        private static IEnumerable<string> DirSearch(string basePath)
-        {
-            var files = Directory.EnumerateFiles(basePath, "*.*", SearchOption.AllDirectories);
-            return files;
-        }
-
-        private static string CalculateMD5(string filename)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(filename))
-                {
-                    var hash = md5.ComputeHash(stream);
-                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-                }
-            }
+            var md5sums = new RecursiveMD5ListOfDirectory(args[0], new ConsoleOutput());
+            md5sums.Write();
         }
     }
 }
