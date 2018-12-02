@@ -12,6 +12,9 @@ namespace DirCompare
 
             [Value(0, Required = true, MetaName = "basedir", HelpText = "The directory that is scanned recursively.")]
             public string basedir { get; set; }
+
+            [Value(1, MetaName = "basedir 2", HelpText = "The other directory that is scanned. The results will be compared.")]
+            public string secondBasedir { get; set; }
         }
 
         static void Main(string[] args)
