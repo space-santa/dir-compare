@@ -6,36 +6,14 @@ using System.Security.Cryptography;
 
 namespace DirCompare
 {
-    class Program
+    public class PathProcessor
     {
-        static void Main(string[] args)
+        public static string GetConsistentPathWithoutBase(string fullPath, string basePath)
         {
-            Console.WriteLine($"Now processing {args[0]}");
-            ProcessDirectory(args[0]);
-        }
-
-        public static void ProcessDirectory(string path)
-        {
-            List<string> sums = new List<string>();
-            foreach (string file in DirSearch(path))
+            if (fullPath.Length < 1)
             {
-                sums.Add($"{GetConsistentPathWithoutBase(file, path)} {CalculateMD5(file)}");
+                throw new System.ArgumentException("fullPath can't be empty");
             }
-            sums.Sort();
-            foreach (string line in sums)
-            {
-                Console.WriteLine(line);
-            }
-        }
-
-        private static IEnumerable<string> DirSearch(string basePath)
-        {
-            var files = Directory.EnumerateFiles(basePath, "*.*", SearchOption.AllDirectories);
-            return files;
-        }
-
-        private static string GetConsistentPathWithoutBase(string fullPath, string basePath)
-        {
             // To compare the content of the directory we must remove the basePath.
             // It will be different which makes the diff useless.
             // We also need to have consistent path-separators for the same reason.
@@ -57,6 +35,35 @@ namespace DirCompare
                 return path.Remove(0, 1);
             }
             return path;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine($"Now processing {args[0]}");
+            ProcessDirectory(args[0]);
+        }
+
+        public static void ProcessDirectory(string path)
+        {
+            List<string> sums = new List<string>();
+            foreach (string file in DirSearch(path))
+            {
+                sums.Add($"{PathProcessor.GetConsistentPathWithoutBase(file, path)} {CalculateMD5(file)}");
+            }
+            sums.Sort();
+            foreach (string line in sums)
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        private static IEnumerable<string> DirSearch(string basePath)
+        {
+            var files = Directory.EnumerateFiles(basePath, "*.*", SearchOption.AllDirectories);
+            return files;
         }
 
         private static string CalculateMD5(string filename)
