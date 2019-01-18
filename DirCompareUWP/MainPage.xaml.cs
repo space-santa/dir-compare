@@ -30,6 +30,7 @@ namespace DirCompareUWP
         public MainPage()
         {
             this.InitializeComponent();
+            ResetResultListBox();
         }
 
         private static async System.Threading.Tasks.Task<StorageFolder> GetFolderForComparisonAsync()
@@ -44,21 +45,74 @@ namespace DirCompareUWP
         private async void FolderOneButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             _folder1 = await GetFolderForComparisonAsync();
-            FolderOneTextBox.Text = _folder1.Path;
+            UpdateFolderTextBoxes();
         }
 
         private async void FolderTwoButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             _folder2 = await GetFolderForComparisonAsync();
-            FolderTwoTextBox.Text = _folder2.Path;
+            UpdateFolderTextBoxes();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            ResetResultListBox();
             _folder1 = null;
             _folder2 = null;
-            FolderOneTextBox.Text = "";
-            FolderTwoTextBox.Text = "";
+            UpdateFolderTextBoxes();
+        }
+
+        private void UpdateFolderTextBoxes()
+        {
+            if (_folder1 != null)
+            {
+                FolderOneTextBox.Text = _folder1.Path;
+            }
+            else
+            {
+                FolderOneTextBox.Text = "";
+            }
+
+            if (_folder2 != null)
+            {
+                FolderTwoTextBox.Text = _folder2.Path;
+            }
+            else
+            {
+                FolderTwoTextBox.Text = "";
+            }
+        }
+
+        private async void CompareButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            ResetResultListBox();
+
+            if (_folder1 == null || _folder2 == null)
+            {
+                return;
+            }
+
+            var lhs = await GetMD5ListAsync(_folder1);
+            var rhs = await GetMD5ListAsync(_folder2);
+
+            var aNotInB = lhs.Except(rhs).ToList();
+            var bNotInA = rhs.Except(lhs).ToList();
+            List<string> diffList = new List<string>();
+            diffList.Add($"a = {_folder1.Path}");
+            diffList.Add($"b = {_folder2.Path}");
+            diffList.Add("-------------------");
+            diffList.Add("aNotInB");
+            diffList = diffList.Concat(aNotInB).ToList();
+            diffList.Add("bNotInA");
+            diffList = diffList.Concat(bNotInA).ToList();
+            ResultListBox.ItemsSource = diffList;
+        }
+
+        private void ResetResultListBox()
+        {
+            var tmp = new List<string>();
+            tmp.Add("Waiting for comparison...");
+            ResultListBox.ItemsSource = tmp;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -74,7 +128,7 @@ namespace DirCompareUWP
             foreach (var file in files)
             {
                 var stream = await file.OpenStreamForReadAsync();
-                filesWithMD5.Add($"{file.Path} - {CalculateMD5(stream)}");
+                filesWithMD5.Add($"{file.Path.Replace(folder.Path, "")} - {CalculateMD5(stream)}");
             }
 
             return filesWithMD5;
