@@ -21,9 +21,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Button Grid.Column="0" Grid.Row="0" FontSize="36" HorizontalAlignment="Center" Click="FolderOneButton_ClickAsync">📂</Button>
-        <Button Grid.Column="1" Grid.Row="0" FontSize="36" HorizontalAlignment="Center" Click="CompareButton_ClickAsync">⚙</Button>
-        <Button Grid.Column="2" Grid.Row="0" FontSize="36" HorizontalAlignment="Center" Click="FolderTwoButton_ClickAsync">📂</Button>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >
+            <Button FontSize="36" HorizontalAlignment="Center" Click="FolderOneButton_ClickAsync">📂</Button>
+            <Button FontSize="36" HorizontalAlignment="Center" Click="CompareButton_ClickAsync">⚙</Button>
+            <Button FontSize="36" HorizontalAlignment="Center" Click="FolderTwoButton_ClickAsync">📂</Button>
+        </StackPanel>
+        
         
         <TextBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" x:Name="FolderOneTextBox"></TextBox>
         <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" x:Name="FolderTwoTextBox"></TextBox>
@@ -31,8 +35,11 @@
         <ProgressBar x:Name="ComparisonProgressBar" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Visibility="Collapsed" Height="32"></ProgressBar>
         
         <ListBox x:Name="ResultListBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"></ListBox>
-        
-        <Button Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" FontSize="36" Click="CancelButton_Click">❌</Button>
-        <Button Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" FontSize="36" Click="ExitButton_Click">🚪</Button>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" HorizontalAlignment="Center" >
+            <Button FontSize="36" Click="CancelButton_Click">❌</Button>
+            <Button FontSize="36" Click="SaveButton_ClickAsync">💾</Button>
+            <Button FontSize="36" Click="ExitButton_Click">🚪</Button>
+        </StackPanel>
     </Grid>
 </Page>

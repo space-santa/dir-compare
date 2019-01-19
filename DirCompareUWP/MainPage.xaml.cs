@@ -127,6 +127,47 @@ namespace DirCompareUWP
             ResultListBox.ItemsSource = tmp;
         }
 
+        private async void SaveButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+            savePicker.SuggestedStartLocation =
+                Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            // Dropdown of file types the user can save the file as
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            // Default file name if the user does not type one in or select a file to replace
+            savePicker.SuggestedFileName = "New Document";
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                // Prevent updates to the remote version of the file until
+                // we finish making changes and call CompleteUpdatesAsync.
+                CachedFileManager.DeferUpdates(file);
+                // write to file
+                await FileIO.WriteTextAsync(file, file.Name);
+                // Let Windows know that we're finished changing the file so
+                // the other app can update the remote version of the file.
+                // Completing updates may require Windows to ask for user input.
+                Windows.Storage.Provider.FileUpdateStatus status =
+                    await CachedFileManager.CompleteUpdatesAsync(file);
+                if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                {
+                    // TODO: Add MessageBox to say this.
+                    //this.textBlock.Text = "File " + file.Name + " was saved.";
+                }
+                else
+                {
+                    // TODO: Add MessageBox to say this.
+                    //this.textBlock.Text = "File " + file.Name + " couldn't be saved.";
+                }
+            }
+            else
+            {
+                // TODO: Add MessageBox to say this.
+                //this.textBlock.Text = "Operation cancelled.";
+            }
+        }
+
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
@@ -140,7 +181,7 @@ namespace DirCompareUWP
             {
                 var stream = await file.OpenStreamForReadAsync();
                 filesWithMD5.Add($"{file.Path.Replace(folder.Path, "")} - {CalculateMD5(stream)}");
-                ComparisonProgressBar.Value +=1;
+                ComparisonProgressBar.Value += 1;
             }
 
             return filesWithMD5;
