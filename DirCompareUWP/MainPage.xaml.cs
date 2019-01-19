@@ -92,8 +92,20 @@ namespace DirCompareUWP
                 return;
             }
 
-            var lhs = await GetMD5ListAsync(_folder1);
-            var rhs = await GetMD5ListAsync(_folder2);
+            ComparisonProgressBar.IsIndeterminate = true;
+            ComparisonProgressBar.Visibility = Visibility.Visible;
+
+            var files1 = await _folder1.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByName);
+            var files2 = await _folder2.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByName);
+
+            ComparisonProgressBar.IsIndeterminate = false;
+            ComparisonProgressBar.Maximum = files1.Count + files2.Count;
+            ComparisonProgressBar.Value = 0;
+
+            var lhs = await GetMD5ListAsync(files1, _folder1);
+            var rhs = await GetMD5ListAsync(files2, _folder2);
+
+            ComparisonProgressBar.Visibility = Visibility.Collapsed;
 
             var aNotInB = lhs.Except(rhs).ToList();
             var bNotInA = rhs.Except(lhs).ToList();
@@ -120,15 +132,15 @@ namespace DirCompareUWP
             Application.Current.Exit();
         }
 
-        private static async System.Threading.Tasks.Task<List<string>> GetMD5ListAsync(StorageFolder folder)
+        private async System.Threading.Tasks.Task<List<string>> GetMD5ListAsync(IReadOnlyList<StorageFile> files, StorageFolder folder)
         {
-            var files = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByName);
             var filesWithMD5 = new List<string>();
 
             foreach (var file in files)
             {
                 var stream = await file.OpenStreamForReadAsync();
                 filesWithMD5.Add($"{file.Path.Replace(folder.Path, "")} - {CalculateMD5(stream)}");
+                ComparisonProgressBar.Value +=1;
             }
 
             return filesWithMD5;
