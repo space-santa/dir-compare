@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -130,42 +131,44 @@ namespace DirCompareUWP
         private async void SaveButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-            savePicker.SuggestedStartLocation =
-                Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            // Dropdown of file types the user can save the file as
+            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            // Default file name if the user does not type one in or select a file to replace
             savePicker.SuggestedFileName = "New Document";
-
             StorageFile file = await savePicker.PickSaveFileAsync();
+
             if (file != null)
             {
                 // Prevent updates to the remote version of the file until
                 // we finish making changes and call CompleteUpdatesAsync.
                 CachedFileManager.DeferUpdates(file);
                 // write to file
-                await FileIO.WriteTextAsync(file, file.Name);
+                await FileIO.WriteTextAsync(file, string.Join("\n", ResultListBox.Items.ToArray()));
                 // Let Windows know that we're finished changing the file so
                 // the other app can update the remote version of the file.
                 // Completing updates may require Windows to ask for user input.
-                Windows.Storage.Provider.FileUpdateStatus status =
-                    await CachedFileManager.CompleteUpdatesAsync(file);
+                Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+
                 if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
                 {
-                    // TODO: Add MessageBox to say this.
-                    //this.textBlock.Text = "File " + file.Name + " was saved.";
+                    SimpleMessagePopup($"File {file.Name} saved.");
                 }
                 else
                 {
-                    // TODO: Add MessageBox to say this.
-                    //this.textBlock.Text = "File " + file.Name + " couldn't be saved.";
+                    SimpleMessagePopup($"File {file.Name} couldn't be saved.");
                 }
             }
-            else
-            {
-                // TODO: Add MessageBox to say this.
-                //this.textBlock.Text = "Operation cancelled.";
-            }
+        }
+
+        private async void SimpleMessagePopup(string message)
+        {
+            var messageDialog = new MessageDialog(message);
+            messageDialog.Commands.Add(new UICommand("Close"));
+            // Set the command that will be invoked by default 
+            messageDialog.DefaultCommandIndex = 0;
+            // Set the command to be invoked when escape is pressed 
+            messageDialog.CancelCommandIndex = 0;
+            // Show the message dialog 
+            await messageDialog.ShowAsync();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
