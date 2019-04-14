@@ -65,23 +65,8 @@ namespace DirCompareUWP
 
         private void UpdateFolderTextBoxes()
         {
-            if (_folder1 != null)
-            {
-                FolderOneTextBox.Text = _folder1.Path;
-            }
-            else
-            {
-                FolderOneTextBox.Text = "";
-            }
-
-            if (_folder2 != null)
-            {
-                FolderTwoTextBox.Text = _folder2.Path;
-            }
-            else
-            {
-                FolderTwoTextBox.Text = "";
-            }
+            FolderOneTextBox.Text = _folder1 != null ? _folder1.Path : "";
+            FolderTwoTextBox.Text = _folder2 != null ? _folder2.Path : "";
         }
 
         private async void CompareButton_ClickAsync(object sender, RoutedEventArgs e)
