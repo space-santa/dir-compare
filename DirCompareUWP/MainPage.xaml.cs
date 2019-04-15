@@ -4,17 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -148,11 +141,11 @@ namespace DirCompareUWP
         {
             var messageDialog = new MessageDialog(message);
             messageDialog.Commands.Add(new UICommand("Close"));
-            // Set the command that will be invoked by default 
+            // Set the command that will be invoked by default
             messageDialog.DefaultCommandIndex = 0;
-            // Set the command to be invoked when escape is pressed 
+            // Set the command to be invoked when escape is pressed
             messageDialog.CancelCommandIndex = 0;
-            // Show the message dialog 
+            // Show the message dialog
             await messageDialog.ShowAsync();
         }
 
