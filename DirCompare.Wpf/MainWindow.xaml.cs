@@ -39,7 +39,7 @@ namespace DirCompare.Wpf
             return dialog.SelectFolder();
         }
 
-        private async void FolderOneButton_Click(object sender, RoutedEventArgs e)
+        private void FolderOneButton_Click(object sender, RoutedEventArgs e)
         {
             _folder1 = GetFolderForComparison();
             UpdateFolderTextBoxes();
@@ -63,7 +63,7 @@ namespace DirCompare.Wpf
             ComparisonProgressBar.Visibility = Visibility.Collapsed;
         }
 
-        private async void FolderTwoButton_Click(object sender, RoutedEventArgs e)
+        private void FolderTwoButton_Click(object sender, RoutedEventArgs e)
         {
             _folder2 = GetFolderForComparison();
             UpdateFolderTextBoxes();
