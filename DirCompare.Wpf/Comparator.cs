@@ -3,35 +3,35 @@ using System.Collections.Generic;
 
 namespace DirCompare.Wpf
 {
-    class ListOutput : DirCompare.IOutput
-    {
-        public List<string> result { get; set; }
-
-        public void Write(List<string> md5sums)
-        {
-            result = md5sums;
-        }
-    }
-
     public class Comparator
     {
+        private static List<string> ListHeader(string folder1, string folder2)
+        {
+            List<string> listHeader = new List<string>();
+            listHeader.Add($"a = {folder1}");
+            listHeader.Add($"b = {folder2}");
+            listHeader.Add("-------------------");
+            return listHeader;
+        }
         public static List<string> Compare(string folder1, string folder2)
         {
-            var output = new ListOutput();
+            var md5sums = new RecursiveMD5ListOfDirectory(folder1);
+            List<string> diffList;
 
-            var md5sums = new RecursiveMD5ListOfDirectory(folder1, output);
             if (folder2.Length > 0)
             {
-                var secondSums = new RecursiveMD5ListOfDirectory(folder2, output);
+                var secondSums = new RecursiveMD5ListOfDirectory(folder2);
                 var diffSums = md5sums.Diff(secondSums);
-                diffSums.Write();
+                diffList = diffSums.GetPathsWithMD5Sum();
             }
             else
             {
-                md5sums.Write();
+                diffList = md5sums.GetPathsWithMD5Sum();
             }
 
-            return output.result;
+            var comparedList = ListHeader(folder1, folder2);
+            comparedList.AddRange(diffList);
+            return comparedList;
         }
     }
 }

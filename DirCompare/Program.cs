@@ -31,16 +31,16 @@ namespace DirCompare
                     {
                         output = new ConsoleOutput();
                     }
-                    var md5sums = new RecursiveMD5ListOfDirectory(o.basedir, output);
+                    var md5sums = new RecursiveMD5ListOfDirectory(o.basedir);
                     if (o.secondBasedir.Length > 0)
                     {
-                        var secondSums = new RecursiveMD5ListOfDirectory(o.secondBasedir, output);
+                        var secondSums = new RecursiveMD5ListOfDirectory(o.secondBasedir);
                         var diffSums = md5sums.Diff(secondSums);
-                        diffSums.Write();
+                        output.Write(diffSums.GetPathsWithMD5Sum());
                     }
                     else
                     {
-                        md5sums.Write();
+                        output.Write(md5sums.GetPathsWithMD5Sum());
                     }
                 });
         }

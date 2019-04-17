@@ -10,19 +10,16 @@ namespace DirCompare
     {
         private List<string> _pathsWithMD5Sum = new List<string>();
         private readonly string _basePath;
-        private readonly IOutput _output;
 
-        public RecursiveMD5ListOfDirectory(string basePath, IOutput output)
+        public RecursiveMD5ListOfDirectory(string basePath)
         {
             _basePath = basePath;
-            _output = output;
             ProcessDirectory();
         }
 
-        public RecursiveMD5ListOfDirectory(List<string> pathsWithMD5Sum, IOutput output)
+        public RecursiveMD5ListOfDirectory(List<string> pathsWithMD5Sum)
         {
             _pathsWithMD5Sum = pathsWithMD5Sum;
-            _output = output;
         }
 
         public List<string> GetPathsWithMD5Sum()
@@ -39,12 +36,7 @@ namespace DirCompare
             diffList = diffList.Concat(aNotInB).ToList();
             diffList.Add("bNotInA");
             diffList = diffList.Concat(bNotInA).ToList();
-            return new RecursiveMD5ListOfDirectory(diffList, _output);
-        }
-
-        public void Write()
-        {
-            _output.Write(_pathsWithMD5Sum);
+            return new RecursiveMD5ListOfDirectory(diffList);
         }
 
         private void ProcessDirectory()
