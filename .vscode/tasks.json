@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DirCompare/DirCompare.csproj"
+                "${workspaceFolder}/DirCompare.Wpf/DirCompare.Wpf.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

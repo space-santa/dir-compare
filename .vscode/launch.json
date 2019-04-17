@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DirCompare/bin/Debug/netcoreapp2.1/DirCompare.dll",
+            "program": "${workspaceFolder}/DirCompare.Wpf/bin/Debug/netcoreapp3.0/DirCompare.Wpf.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/DirCompare",
+            "cwd": "${workspaceFolder}/DirCompare.Wpf",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
             "stopAtEntry": false,
