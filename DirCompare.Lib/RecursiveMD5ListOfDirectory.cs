@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System;
 
-namespace DirCompare
+namespace DirCompare.Lib
 {
     public class RecursiveMD5ListOfDirectory
     {

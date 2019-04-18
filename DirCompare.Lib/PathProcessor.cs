@@ -1,4 +1,4 @@
-namespace DirCompare
+namespace DirCompare.Lib
 {
     public class PathProcessor
     {

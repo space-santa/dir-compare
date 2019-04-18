@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace DirCompare
+namespace DirCompare.Lib
 {
     public class FileOutput : IOutput
     {

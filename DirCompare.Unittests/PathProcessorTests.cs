@@ -1,4 +1,4 @@
-using DirCompare;
+using DirCompare.Lib;
 using NUnit.Framework;
 
 namespace Tests

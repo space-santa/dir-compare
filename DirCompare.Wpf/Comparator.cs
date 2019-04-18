@@ -1,4 +1,4 @@
-
+using DirCompare.Lib;
 using System.Collections.Generic;
 
 namespace DirCompare.Wpf
