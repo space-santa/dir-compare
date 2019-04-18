@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -100,7 +101,30 @@ namespace DirCompare.Wpf
 
         private void SaveButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            var items = ResultListBox.Items;
+            if (items.Count < 2)
+            {
+                return;
+            }
 
+            var dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "DirCompareResult";
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "DirCompareResult | *.txt";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                var path = dlg.FileName;
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    foreach (var line in items)
+                    {
+                        sw.WriteLine(line);
+                    }
+                }
+            }
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
