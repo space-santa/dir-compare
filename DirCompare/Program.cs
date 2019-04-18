@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandLine;
+using DirCompare.Lib;
 
 namespace DirCompare
 {

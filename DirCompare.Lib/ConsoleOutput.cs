@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DirCompare
+namespace DirCompare.Lib
 {
     public class ConsoleOutput : IOutput
     {

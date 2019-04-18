@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DirCompare\DirCompare.csproj" />
+    <ProjectReference Include="..\DirCompare.Lib\DirCompare.Lib.csproj" />
   </ItemGroup>
 
 </Project>

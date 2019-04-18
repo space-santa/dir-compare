@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <ItemGroup>
-    <ProjectReference Include="..\DirCompare\DirCompare.csproj" />
+    <ProjectReference Include="..\DirCompare.Lib\DirCompare.Lib.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
