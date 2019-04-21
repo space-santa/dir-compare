@@ -41,6 +41,8 @@ namespace DirCompare.Lib
 
         private void ProcessDirectory()
         {
+            if (_basePath.Length < 1) { return; }
+
             _pathsWithMD5Sum.Clear();
             foreach (string file in DirSearch(_basePath))
             {
