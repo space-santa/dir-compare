@@ -1,4 +1,4 @@
-$version = "1.0.1"
+$version = "1.0.2"
 $PathToPublish = "..\DirCompare.Wpf\bin\Release\netcoreapp3.0\publish"
 
 dotnet publish ../DirCompare.Wpf/DirCompare.Wpf.csproj -c Release
