@@ -94,8 +94,8 @@
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualStateGroup.Transitions>
-                                        <VisualTransition GeneratedDuration="0:0:0.2" />
-                                        <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                        <VisualTransition GeneratedDuration="0:0:0.1" />
+                                        <VisualTransition GeneratedDuration="0:0:0.1" To="Pressed" />
                                     </VisualStateGroup.Transitions>
                                     <VisualState x:Name="Normal" />
                                     <VisualState x:Name="MouseOver">
@@ -112,16 +112,9 @@
                                     </VisualState>
                                     <VisualState x:Name="Disabled">
                                         <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Border">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlDarkColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Border">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)"
-                                                Storyboard.TargetName="Border">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderDarkColor}" />
-                                            </ColorAnimationUsingKeyFrames>
+                                            <ColorAnimation To="{StaticResource DisabledControlDarkColor}" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Border" />
+                                            <ColorAnimation To="{StaticResource DisabledForegroundColor}" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Border" />
+                                            <ColorAnimation To="{StaticResource DisabledBorderDarkColor}" Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Border" />
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
