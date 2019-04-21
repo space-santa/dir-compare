@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Name="DirCompare" Manufacturer="SpaceSanta" Id="c31eab52-cbfb-4093-9d29-333f7b490d7f" UpgradeCode="652b2474-3aff-4b77-988f-987706455186" Language="1033" Codepage="1252" Version="1.0.2">
+  <Product Name="DirCompare" Manufacturer="SpaceSanta" Id="c31eab52-cbfb-4093-9d29-333f7b490d7f" UpgradeCode="652b2474-3aff-4b77-988f-987706455186" Language="1033" Codepage="1252" Version="1.1.0">
     <Package Id="*" Description="DirCompare installer" Comments="SpaceSanta is the best" Manufacturer="SpaceSanta" InstallerVersion="100" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
     <Upgrade Id="652b2474-3aff-4b77-988f-987706455186">
       <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND" Minimum="0.0.0" IncludeMinimum="yes" Maximum="1.0.0" IncludeMaximum="no" />
