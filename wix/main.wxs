@@ -1,79 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product
-        Name="DirCompare"
-        Manufacturer="SpaceSanta"
-        Id="c31eab52-cbfb-4093-9d29-333f7b490d7f"
-        UpgradeCode="652b2474-3aff-4b77-988f-987706455186"
-        Language="1033"
-        Codepage="1252"
-        Version="1.0.0"
-    >
-        <Package
-            Id="*"
-            Description="DirCompare installer"
-            Comments="SpaceSanta is the best"
-            Manufacturer="SpaceSanta"
-            InstallerVersion="100"
-            Languages="1033"
-            Compressed="yes"
-            SummaryCodepage="1252"
-        />
-
-        <Upgrade Id='652b2474-3aff-4b77-988f-987706455186'>
-            <UpgradeVersion OnlyDetect='no' Property='PREVIOUSFOUND'
-                Minimum='0.0.0' IncludeMinimum='yes'
-                Maximum='1.0.0' IncludeMaximum='no' />
-            <UpgradeVersion OnlyDetect='yes' Property='SELFFOUND'
-                Minimum='1.0.0' IncludeMinimum='yes' Maximum='1.0.0' IncludeMaximum='yes' />
-            <UpgradeVersion OnlyDetect='yes' Property='NEWERFOUND'
-                Minimum='1.0.0' IncludeMinimum='no' />
-        </Upgrade>
-
-        <CustomAction Id='AlreadyUpdated' Error='[ProductName] is already installed.' />
-        <CustomAction Id='NoDowngrade' Error='A later version of [ProductName] is already installed.' />
-
-        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
-        <Property Id='DiskPrompt' Value="DirCompare Installation [1]" />
-
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="SpaceSanta" Name="SpaceSanta">
-                    <Directory Id="INSTALLDIR" Name="DirCompare">
-                    </Directory>
-                </Directory>
-            </Directory>
-
-            <Directory Id="ProgramMenuFolder">
-                <Directory Id="ProgramMenuDir" Name="DirCompare">
-                    <Component Id="StartMenuShortcuts" Guid="c5f71c36-022c-47cf-ae2c-9046e38ce5c9">
-                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
-                        <Shortcut Id="UninstallProduct" Name="Uninstall" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
-                    </Component>
-                </Directory>
-            </Directory>
-
-             <Directory Id="DesktopFolder" Name="Desktop" />
+  <Product Name="DirCompare" Manufacturer="SpaceSanta" Id="c31eab52-cbfb-4093-9d29-333f7b490d7f" UpgradeCode="652b2474-3aff-4b77-988f-987706455186" Language="1033" Codepage="1252" Version="1.0.1">
+    <Package Id="*" Description="DirCompare installer" Comments="SpaceSanta is the best" Manufacturer="SpaceSanta" InstallerVersion="100" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
+    <Upgrade Id="652b2474-3aff-4b77-988f-987706455186">
+      <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND" Minimum="0.0.0" IncludeMinimum="yes" Maximum="1.0.0" IncludeMaximum="no" />
+      <UpgradeVersion OnlyDetect="yes" Property="SELFFOUND" Minimum="1.0.0" IncludeMinimum="yes" Maximum="1.0.0" IncludeMaximum="yes" />
+      <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="1.0.0" IncludeMinimum="no" />
+    </Upgrade>
+    <CustomAction Id="AlreadyUpdated" Error="[ProductName] is already installed." />
+    <CustomAction Id="NoDowngrade" Error="A later version of [ProductName] is already installed." />
+    <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
+    <Property Id="DiskPrompt" Value="DirCompare Installation [1]" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="SpaceSanta" Name="SpaceSanta">
+          <Directory Id="INSTALLDIR" Name="DirCompare">
+          </Directory>
         </Directory>
-
-        <Feature
-            Id='Complete' Title='DirCompare' Description='The complete package.'
-            Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'
-        >
-
-            <ComponentGroupRef Id='DependencyGroup' />
-            <ComponentRef Id="StartMenuShortcuts" />
-
-        </Feature>
-
-        <InstallExecuteSequence>
-            <RemoveExistingProducts Before="InstallInitialize" />
-            <Custom Action='AlreadyUpdated' After='FindRelatedProducts'>SELFFOUND</Custom>
-            <Custom Action='NoDowngrade' After='FindRelatedProducts'>NEWERFOUND</Custom>
-        </InstallExecuteSequence>
-
-        <Icon Id="StartMenuIcon.exe" SourceFile="..\GraphicsDesign\DirCompare.ico" />
-
-    </Product>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="DirCompare">
+          <Component Id="StartMenuShortcuts" Guid="c5f71c36-022c-47cf-ae2c-9046e38ce5c9">
+            <Shortcut Id="AppShortcut" Name="DirCompare" Description="My Application Description" Icon="StartMenuIcon.exe" IconIndex="0" Target="[INSTALLDIR]publish\DirCompare.Wpf.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+            <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+            <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+            <Shortcut Id="UninstallProduct" Name="Uninstall" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+    <Feature Id="Complete" Title="DirCompare" Description="The complete package." Display="expand" Level="1" ConfigurableDirectory="INSTALLDIR">
+      <ComponentGroupRef Id="DependencyGroup" />
+      <ComponentRef Id="StartMenuShortcuts" />
+    </Feature>
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before="InstallInitialize" />
+      <Custom Action="AlreadyUpdated" After="FindRelatedProducts">SELFFOUND</Custom>
+      <Custom Action="NoDowngrade" After="FindRelatedProducts">NEWERFOUND</Custom>
+    </InstallExecuteSequence>
+    <Icon Id="StartMenuIcon.exe" SourceFile="..\GraphicsDesign\DirCompare.ico" />
+  </Product>
 </Wix>
